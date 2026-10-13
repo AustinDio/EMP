@@ -7,7 +7,9 @@ from flask_login import LoginManager
 from extensions import db, login_manager
 from models import User
 from routes.auth import auth_bp
-
+from routes.courses import courses_bp
+from routes.examinations import examinations_bp
+from routes.rubrics import rubrics_bp
 
 app = Flask(__name__)
 
@@ -51,7 +53,9 @@ def unauthorized():
 
 
 app.register_blueprint(auth_bp)
-
+app.register_blueprint(courses_bp)
+app.register_blueprint(examinations_bp)
+app.register_blueprint(rubrics_bp)
 
 @app.route("/")
 def home():
