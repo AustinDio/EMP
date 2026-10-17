@@ -10,6 +10,10 @@ from routes.auth import auth_bp
 from routes.courses import courses_bp
 from routes.examinations import examinations_bp
 from routes.rubrics import rubrics_bp
+from routes.slots import slots_bp
+from routes.bookings import bookings_bp
+from routes.evaluations import evaluations_bp
+from routes.results import results_bp
 
 app = Flask(__name__)
 
@@ -56,6 +60,10 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(courses_bp)
 app.register_blueprint(examinations_bp)
 app.register_blueprint(rubrics_bp)
+app.register_blueprint(slots_bp)
+app.register_blueprint(bookings_bp)
+app.register_blueprint(evaluations_bp)
+app.register_blueprint(results_bp)
 
 @app.route("/")
 def home():
