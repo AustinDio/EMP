@@ -146,3 +146,27 @@ class Evaluation(db.Model):
     booking = db.relationship("Booking", back_populates="evaluation")
     student = db.relationship("User", foreign_keys=[student_id])
     examiner = db.relationship("User", foreign_keys=[examiner_id])
+
+    
+class ExaminerAvailability(db.Model):
+    __tablename__ = "examiner_availability"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    examiner_id = db.Column(
+        db.Integer,
+        db.ForeignKey("users.id"),
+        nullable=False
+    )
+
+    available_date = db.Column(db.Date, nullable=False)
+    start_time = db.Column(db.Time, nullable=False)
+    end_time = db.Column(db.Time, nullable=False)
+
+    status = db.Column(
+        db.String(20),
+        default="Available",
+        nullable=False
+    )
+
+    examiner = db.relationship("User", foreign_keys=[examiner_id])
