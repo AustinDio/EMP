@@ -4,7 +4,7 @@ from datetime import datetime
 from flask import Blueprint, jsonify, request
 
 from extensions import db
-from models import Examination, Slot, User, Booking
+from models import Examination, Slot, User, Booking, ExaminerAvailability
 from routes.decorators import roles_required
 
 
@@ -117,7 +117,24 @@ def validate_slot_data(data, existing_slot=None):
         return None, "start_time and end_time must use HH:MM format."
 
     if start_time >= end_time:
-        return None, "end_time must be later than start_time."
+        from datetime import date
+
+        if exam_date < date.today():
+            return None, "Exam date cannot be in the past."
+
+        availability = ExaminerAvailability.query.filter(
+            ExaminerAvailability.examiner_id == examiner_id,
+            ExaminerAvailability.available_date == exam_date,
+            ExaminerAvailability.status == "Available",
+            ExaminerAvailability.start_time <= start_time,
+            ExaminerAvailability.end_time >= end_time
+        ).first()
+
+        if availability is None:
+            return None, (
+                "The examiner has not declared availability "
+                "for this date and time."
+            )
 
     # Get capacity.
     capacity = data.get(

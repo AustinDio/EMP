@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from flask_cors import CORS
 from flask_login import LoginManager
 
@@ -77,6 +77,9 @@ def home():
         "status": "success"
     })
 
+@app.route("/app")
+def frontend():
+    return render_template("index.html")
 
 @app.route("/api/health")
 def health():
